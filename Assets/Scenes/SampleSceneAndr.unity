@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 233185747}
   - component: {fileID: 233185746}
   - component: {fileID: 233185745}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Item (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -793,7 +793,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eae3013373ac1ad498b809e4583727da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  _animator: {fileID: 1430722523}
   spriteRenderer: {fileID: 1430722520}
 --- !u!212 &1430722520
 SpriteRenderer:
@@ -1187,7 +1186,7 @@ GameObject:
   - component: {fileID: 1869622873}
   - component: {fileID: 1869622872}
   - component: {fileID: 1869622871}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Item (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1315,13 +1314,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Item
       objectReference: {fileID: 0}
+    - target: {fileID: 19479452268064809, guid: f9fb25ba5bb94aa47b8a3647761487f7, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7158272135636692024, guid: f9fb25ba5bb94aa47b8a3647761487f7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.67
+      value: -2.24
       objectReference: {fileID: 0}
     - target: {fileID: 7158272135636692024, guid: f9fb25ba5bb94aa47b8a3647761487f7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.36
+      value: -0.02
       objectReference: {fileID: 0}
     - target: {fileID: 7158272135636692024, guid: f9fb25ba5bb94aa47b8a3647761487f7, type: 3}
       propertyPath: m_LocalPosition.z
