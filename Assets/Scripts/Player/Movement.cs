@@ -6,7 +6,10 @@ public class Movement : MonoBehaviour
 {
     private Transform _transform;
     private InputSystem_ActionsCopy _inputActions;
-    public Animator _animator;
+    private Animator _animator;
+
+    private Vector2 lastoMoveDirection;
+    private bool facingLeft = true;
 
     [SerializeField] private SpriteRenderer spriteRenderer;
     private float xPosLastFrame;
@@ -16,9 +19,13 @@ public class Movement : MonoBehaviour
         _transform = GetComponent<Transform>();
         _inputActions = new InputSystem_ActionsCopy();
         _inputActions.Enable();
+        _animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
+
+
+
     void FixedUpdate()
     {
         bool isInteracting = _inputActions.Player.Interact.ReadValue<float>() > 0.5f;
@@ -27,12 +34,26 @@ public class Movement : MonoBehaviour
         Vector2 movementInput = _inputActions.Player.Move.ReadValue<Vector2>();
         Vector3 movement = new Vector3(movementInput.x, movementInput.y, 0)*Time.deltaTime*5f;
         
-        if(isInteracting)
+        if((movementInput.x!=0 || movementInput.y!=0))
+        {
+           // Debug.Log("Updating last move direction to: " + movementInput);
+            lastoMoveDirection = movementInput;
+        }
+
+        //if (movementInput.x < 0 && !facingLeft || movementInput.x > 0 && facingLeft)
+        //{
+        //    //Vector3 scale =transform.localScale;
+        //    //scale.x*=-1; //face x negativ >>da flip
+        //    //transform.localScale=scale;
+        //    //facingLeft = !facingLeft;
+        //}
+        Debug.Log("isInteracting: " + isInteracting);
+        if (isInteracting)
         {
             Collider2D[] ItemColliders = Physics2D.OverlapCircleAll(transform.position, 0.25f,LayerMask.GetMask("Item"));
             foreach (var hitCollider in ItemColliders)
             {
-                //Debug.Log("Interacted with " + hitCollider.name);
+                Debug.Log("Interacted with " + hitCollider.name);
                 UIManager.AddItem(hitCollider);
 
             }
@@ -49,33 +70,14 @@ public class Movement : MonoBehaviour
         {
 
             _animator.SetBool("isMoving", true);
-            if (movement.x > 0)
-            {
-                
-                _animator.SetFloat("moveX", 1);
-            }
-            else if (movement.x < 0)
-            {
-               
-                _animator.SetFloat("moveX", -1);
-            }
-            else
-            {
-                _animator.SetFloat("moveX", 0);
-            }
-            if (movement.y > 0)
-            {
 
-                _animator.SetFloat("moveY", 1);
-            }
-            else if (movement.y < 0)
-            {
-                _animator.SetFloat("moveY", -1);
-            }
-            else
-            {
-                _animator.SetFloat("moveY", 0);
-            }
+            _animator.SetFloat("lastMoveX", lastoMoveDirection.x);
+            _animator.SetFloat("lastMoveY", lastoMoveDirection.y);
+            _animator.SetFloat("moveMagnitude", movement.magnitude);
+            _animator.SetFloat("moveX", movement.x);
+            _animator.SetFloat("moveY", movement.y);
+
+            
             if (isSprinting)
             {
                 _animator.SetBool("isSprinting", true);
@@ -97,12 +99,24 @@ public class Movement : MonoBehaviour
             {
                 _animator.SetBool("isAttacking", false);
             }
+
         }
 
         else
         {
             _animator.SetBool("isMoving", false);
-        }   
+        }
+
+        if (isAttacking)
+        {
+            _animator.SetBool("isAttacking", true);
+            _animator.SetBool("isMoving", false);
+
+        }
+        else
+        {
+            _animator.SetBool("isAttacking", false);
+        }
 
         FlipCharacter();
     }
@@ -119,5 +133,6 @@ public class Movement : MonoBehaviour
         }
         xPosLastFrame = transform.position.x;
     }
+    
 
 }
